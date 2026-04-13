@@ -12,6 +12,17 @@
 
 */
 
+// !* The pokerGame Object
+var pokerGame = {
+   currentBank: null,
+   currentBet: null,
+
+   placeBet: function() {
+      this.currentBank -= this.currentBet;
+      return this.currentBank;
+   }
+}
+
 window.addEventListener("load", playDrawPoker);
 
 function playDrawPoker() {
@@ -23,14 +34,39 @@ function playDrawPoker() {
    var betSelection = document.getElementById("bet");
    var bankBox = document.getElementById("bank");
 
-   // Enable the Draw and Stand buttons after the deal
-   dealButton.addEventListener("click", function() {
-      disableObj(dealButton);
-      disableObj(betSelection);
-      enableObj(drawButton);
-      enableObj(standButton);
+   pokerGame.currentBank = 500;
+   pokerGame.currentBet = 25;
+
+   bankBox.value = pokerGame.currentBank;
+
+   betSelection.onchange = function(e) {
+      pokerGame.currentBet = parseInt(e.target.obtions[e.target.selectedIndex].value);
+   }
+
+   resetButton.addEventListener("click", function() {
+      pokerGame.currentBank = 500;
+      bankBox.value = pokerGame.currentBank;
+      enableObj(dealButton);
+      enableObj(betSelection);
+      disableObj(drawButton);
+      disableObj(standButton);
    });
 
+   // Enable the Draw and Stand buttons after the deal
+   dealButton.addEventListener("click", function() {
+      if (pokerGame.currentBank >= pokerGame.currentBet){
+         disableObj(dealButton);
+         disableObj(betSelection);
+         enableObj(drawButton);
+         enableObj(standButton);
+
+         bankBox.value = pokerGame.placeBet();
+      } else {
+         alert("Reduce the size of your bet");
+      }
+   });
+
+   // Enable the Deal and Bet options when the current hand ends
    drawButton.addEventListener("click", function() {
       enableObj(dealButton);
       enableObj(betSelection);
