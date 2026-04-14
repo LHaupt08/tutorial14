@@ -12,17 +12,6 @@
 
 */
 
-// !* The pokerGame Object
-var pokerGame = {
-   currentBank: null,
-   currentBet: null,
-
-   placeBet: function() {
-      this.currentBank -= this.currentBet;
-      return this.currentBank;
-   }
-}
-
 window.addEventListener("load", playDrawPoker);
 
 function playDrawPoker() {
@@ -37,10 +26,17 @@ function playDrawPoker() {
    pokerGame.currentBank = 500;
    pokerGame.currentBet = 25;
 
+   // Create a new deck of cards and shuffle it
+   var myDeck = new pokerDeck();
+   myDeck.shuffle();
+
+   // Create a pokerHand object
+   var myHand = new pokerHand(5);
+
    bankBox.value = pokerGame.currentBank;
 
    betSelection.onchange = function(e) {
-      pokerGame.currentBet = parseInt(e.target.obtions[e.target.selectedIndex].value);
+      pokerGame.currentBet = parseInt(e.target.options[e.target.selectedIndex].value);
    }
 
    resetButton.addEventListener("click", function() {
@@ -61,6 +57,15 @@ function playDrawPoker() {
          enableObj(standButton);
 
          bankBox.value = pokerGame.placeBet();
+         
+         // Deal cards into the poker hands after confirming there are at least 10 cards in the deck.
+         if (myDeck.cards.length < 10) {
+            myDeck = new pokerDeck();
+            myDeck.shuffle();
+         }
+         myDeck.dealTo(myHand);
+         console.log(myDeck, myHand);
+
       } else {
          alert("Reduce the size of your bet");
       }

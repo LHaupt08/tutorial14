@@ -33,3 +33,65 @@
 	
 */
 
+// !* The pokerGame Object
+var pokerGame = {
+   currentBank: null,
+   currentBet: null,
+
+   placeBet: function() {
+      this.currentBank -= this.currentBet;
+      return this.currentBank;
+   }
+}
+
+// Constructor function for poker cards
+function pokerCard(cardSuit, cardRank) {
+   this.suit = cardSuit;
+   this.rank = cardRank;
+   this.rankValue = null;
+}
+
+// ! Runtime error somewhere around 1097
+// Method to reference the image source file for a card
+pokerCard.prototype.cardImage = function() {
+   var suitAbbr = this.suit.substring(0, 1).toLowerCase();
+   return "../img/" + suitAbbr + this.rankValue + ".png";
+}
+
+// Contructor function for poker decks
+function pokerDeck() {
+
+   this.cards = new Array(52);
+
+   var suits = ["Clubs", "Diamonds", "Hearts", "Spades"];
+   var ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"];
+
+   var cardCount = 0;
+   for (var i = 0; i < 4; i++) {
+      for (var j = 0; j<13; j++) {
+         this.cards[cardCount] = new pokerCard(suits[i], ranks[j]);
+         this.cards[cardCount].rankValue = j+2;
+         cardCount++;
+      }
+   }
+
+
+
+   // Method to randomly sort the deck
+   this.shuffle = function () {
+      this.cards.sort(function () {
+         return 0.5 - Math.random();
+      });
+   };
+
+   // Method to deal cards from the deck into a poker hand
+   this.dealTo = function(pokerHand) {
+      for (var i = 0; i < pokerHand.cards.length; j++) {
+         pokerHand.cards[i] = this.cards.shift();
+      }
+   }
+}
+
+function pokerHand(handLength) {
+   this.cards = new Array(handLength);
+}
