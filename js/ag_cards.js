@@ -57,18 +57,18 @@ function pokerCard(cardSuit, cardRank) {
 }
 
 // Method to reference the image source file for a card
-pokerCard.prototype.cardImage = function() {
+pokerCard.prototype.cardImage = function () {
    var suitAbbr = this.suit.substring(0, 1).toLowerCase();
    return "../img/" + suitAbbr + this.rankValue + ".png";
 };
 
 /* Method to replace a card with a one from the deck */
-pokerCard.prototype.replaceFromDeck = function(pokerDeck) {
+pokerCard.prototype.replaceFromDeck = function (pokerDeck) {
    this.suit = pokerDeck.cards[0].suit;
    this.rank = pokerDeck.cards[0].rank;
    this.rankValue = pokerDeck.cards[0].rankValue;
    pokerDeck.cards.shift();
-}
+};
 
 // Contructor function for poker decks
 function pokerDeck() {
@@ -97,13 +97,14 @@ function pokerDeck() {
    };
 
    // Method to deal cards from the deck into a poker hand
-   this.dealTo = function(pokerHand) {
+   this.dealTo = function (pokerHand) {
       for (var i = 0; i < pokerHand.cards.length; i++) {
          pokerHand.cards[i] = this.cards.shift();
       }
    };
 }
 
+/* Constructor function for poker hands */
 function pokerHand(handLength) {
    this.cards = new Array(handLength);
 }
@@ -148,7 +149,7 @@ pokerHand.prototype.hasStraightFlush = function() {
 // Test for presence of a royal flush
 pokerHand.prototype.hasRoyalFlush = function() {
    return this.hasStraightFlush() && this.highCard() === 14;
-};
+}
 
 // Test for duplicates in the hand
 pokerHand.prototype.hasSets = function() {
@@ -187,11 +188,11 @@ pokerHand.prototype.hasSets = function() {
 
 // Returns the type of poker hand
 pokerHand.prototype.handType = function() {
-   if (this.hasRoyalFlush()) {return "Royal Flush";
-   } else if (this.hasStraightFlush()) {return "Straight Flush";
-   } else if (this.hasFlush()) {return "Flush";
-   } else if (this.hasStraight()) {return "Straight";
-   } else {
+  if (this.hasRoyalFlush()) {return "Royal Flush";}
+  else if (this.hasStraightFlush()) {return "Straight Flush";}
+  else if (this.hasFlush()) {return "Flush";}
+  else if (this.hasStraight()) {return "Straight";}
+  else {
       var sets = this.hasSets();
       if (sets === "Pair" || sets === "none") {sets = "No Winner";}
       console.log(sets);
@@ -213,4 +214,4 @@ pokerHand.prototype.handOdds = function() {
       case "Jacks or Better" : return 1;
       default: return 0;
    }
-}
+};
