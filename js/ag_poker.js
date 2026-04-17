@@ -78,7 +78,7 @@ function playDrawPoker() {
             cardImages[i].onclick = function(e) {
                if (e.target.discard !== true) {
                   e.target.discard = true;
-                  e.target.src = "../img/ag_cardback.png";
+                  e.target.src = "./img/ag_cardback.png";
                } else {
                   e.target.discard = false;
                   e.target.src = myHand.cards[e.target.index].cardImage();
